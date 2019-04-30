@@ -1,0 +1,93 @@
+\documentclass[UTF8]{ctexart}
+\usepackage{indentfirst}
+\usepackage{listings}
+\usepackage{xcolor}
+
+\lstset{numbers=left,
+numberstyle=\tiny,
+keywordstyle=\color{blue!70},
+commentstyle=\color{red!50!green!50!blue!50},
+frame=shadowbox, 
+rulesepcolor=\color{red!20!green!20!blue!20},
+escapeinside=``,xleftmargin=0em,xrightmargin=0em, 
+aboveskip=1em,
+language=xml
+}
+\author{向董董}
+\title{代码生成器}
+\date{\today}
+%缩进2字符
+
+\begin{document}
+\setlength{\parindent}{2em}
+\maketitle
+\newpage
+\tableofcontents
+\newpage
+
+\part{文件解析}
+    \section{行文件}
+        \subsection{行文件}
+
+            \par{\textbf{在本代码生成器中，行文件是定义生成的具体内容。}
+            行文件固定存放在rows目录下，具体的行文件后缀采用xml文件格式规范，
+            所以所有行文件的内容都应该符合xml文件的格式规范。}
+
+            \subsection{行文件的标签}
+            \par{行文件目前有5大标签，分别是<rows>、<row>、<append>、<var>、<if>、<for>}
+            \\
+            \subsubsection{rows标签}
+                \par\textbf{rows标签的作用是限定当前所有元素在同一页面排列，意味着rows标签的子标签会被输出到同一个页面。
+                }
+                \par rows标签有两个属性:\textbf{namespace}和\textbf{name}.
+                \\ 其中:
+                \\
+                \indent namespance表示rows的命名空间，对应着在templet文件中的name.
+                \\
+                \indent name表示当前rows的名称，以便于在输出文件中进行引用.
+                \\\\
+                \emph{{例子:}}
+                \par\emph{<rows namespace="xxx" name="xxx">...</rows>}
+
+            \subsubsection{row标签}
+                \par\textbf{row标签是生成页面的主要元素，表示在生成页面中占据一行},
+                row标签只有一个基本属性\textbf{ref},表示当前行引用的model。其中,\emph{在model中定义的属性可以在此引用，并会被注入到Model所被定义的地方。}
+                \\
+                \\
+                \newpage
+                \emph{例子:}
+                \emph{
+                    在model中定义:
+                }
+\small\begin{lstlisting}
+<model name="button">
+    <properties>
+        <property name="title" default=""></property>
+    </properties>
+
+    <source-text>
+        <button class="layui-btn layui-btn-primary">
+        ${title}
+        </button>
+    </source-text>
+</model>
+\end{lstlisting} 
+
+            \emph{在行文件中定义:}
+\small\begin{lstlisting}
+    <row ref="button" title="登陆">
+    </row>
+\end{lstlisting}       
+\emph{生成结果:}
+\small\begin{lstlisting}
+    <button class="layui-btn layui-btn-primary">
+        登录
+    </button>
+\end{lstlisting}       
+
+
+
+                
+
+
+\end{document}
